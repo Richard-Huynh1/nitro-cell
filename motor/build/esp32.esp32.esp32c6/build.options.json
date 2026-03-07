@@ -1,0 +1,9 @@
+{
+  "additionalFiles": "",
+  "compiler.optimization_flags": "-Os",
+  "customBuildProperties": "",
+  "fqbn": "esp32:esp32:esp32c6",
+  "hardwareFolders": "/home/codespace/.arduino15/packages/esp32/hardware/esp32/3.3.7,/home/codespace/.arduino15/packages/esp32/hardware/esp32/3.3.7",
+  "otherLibrariesFolders": "/home/codespace/Arduino/libraries",
+  "sketchLocation": "/workspaces/nitro-cell/motor"
+}
