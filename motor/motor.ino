@@ -8,7 +8,6 @@ void set_motor_pwm(int pwm, int IN1_PIN, int IN2_PIN);
 // the setup function runs once when you press reset or power the board
 void setup() {
 
-  // initialize digital pin LED_BUILTIN as an output.
   pinMode(MOT_A1_PIN, OUTPUT);
   pinMode(MOT_A2_PIN, OUTPUT);
   pinMode(MOT_B1_PIN, OUTPUT);
@@ -21,40 +20,81 @@ void setup() {
   digitalWrite(MOT_B2_PIN, LOW);
 
   Serial.begin(9600);
+  Serial.println("Motor test starting...");
 }
 
 // the loop function runs over and over again forever
 void loop() {
-    set_motor_pwm(50,MOT_A1_PIN,MOT_A2_PIN);
-    set_motor_pwm(-50,MOT_B1_PIN,MOT_B2_PIN);
-    delay(2000);
-    set_motor_pwm(0,MOT_A1_PIN,MOT_A2_PIN);
-    set_motor_pwm(50,MOT_B1_PIN,MOT_B2_PIN);
-    delay(2000);
-    set_motor_pwm(-50,MOT_A1_PIN,MOT_A2_PIN);
-    set_motor_pwm(0,MOT_B1_PIN,MOT_B2_PIN);
-    delay(2000);
-    set_motor_pwm(-50,MOT_A1_PIN,MOT_A2_PIN);
-    set_motor_pwm(50,MOT_B1_PIN,MOT_B2_PIN);
-    delay(2000);
-    set_motor_pwm(0,MOT_A1_PIN,MOT_A2_PIN);
-    set_motor_pwm(0,MOT_B1_PIN,MOT_B2_PIN);
-    delay(2000); 
+
+  Serial.println("-----------------------------");
+  Serial.println("Motor A: FORWARD  | Motor B: REVERSE");
+
+  set_motor_pwm(50, MOT_A1_PIN, MOT_A2_PIN);
+  set_motor_pwm(-50, MOT_B1_PIN, MOT_B2_PIN);
+  delay(2000);
+
+
+  Serial.println("-----------------------------");
+  Serial.println("Motor A: STOP     | Motor B: FORWARD");
+
+  set_motor_pwm(0, MOT_A1_PIN, MOT_A2_PIN);
+  set_motor_pwm(50, MOT_B1_PIN, MOT_B2_PIN);
+  delay(2000);
+
+
+  Serial.println("-----------------------------");
+  Serial.println("Motor A: REVERSE  | Motor B: STOP");
+
+  set_motor_pwm(-50, MOT_A1_PIN, MOT_A2_PIN);
+  set_motor_pwm(0, MOT_B1_PIN, MOT_B2_PIN);
+  delay(2000);
+
+
+  Serial.println("-----------------------------");
+  Serial.println("Motor A: REVERSE  | Motor B: FORWARD");
+
+  set_motor_pwm(-50, MOT_A1_PIN, MOT_A2_PIN);
+  set_motor_pwm(50, MOT_B1_PIN, MOT_B2_PIN);
+  delay(2000);
+
+
+  Serial.println("-----------------------------");
+  Serial.println("Motor A: STOP     | Motor B: STOP");
+
+  set_motor_pwm(0, MOT_A1_PIN, MOT_A2_PIN);
+  set_motor_pwm(0, MOT_B1_PIN, MOT_B2_PIN);
+  delay(2000);
 }
 
-/// \param pwm    PWM duty cycle ranging from -255 full reverse to 255 full forward
-/// \param IN1_PIN  pin number xIN1 for the given channel
-/// \param IN2_PIN  pin number xIN2 for the given channel
-
-// AKA pwm is the speed of the motor, 0 is not running
+/// pwm ranges from -255 (full reverse) to 255 (full forward)
+/// IN1_PIN and IN2_PIN are the control pins for the motor
 void set_motor_pwm(int pwm, int IN1_PIN, int IN2_PIN)
 {
-  if (pwm < 0) {  // reverse speeds
+  Serial.print("Motor pins ");
+  Serial.print(IN1_PIN);
+  Serial.print("/");
+  Serial.print(IN2_PIN);
+  Serial.print(" -> ");
+
+  if (pwm < 0) {  // reverse
+    Serial.print("REVERSE | speed: ");
+    Serial.println(-pwm);
+
     analogWrite(IN1_PIN, -pwm);
     digitalWrite(IN2_PIN, LOW);
 
-  } else { // stop or forward
+  } 
+  else if (pwm > 0) { // forward
+    Serial.print("FORWARD | speed: ");
+    Serial.println(pwm);
+
     digitalWrite(IN1_PIN, LOW);
     analogWrite(IN2_PIN, pwm);
+  } 
+  else { // stop
+    Serial.println("STOP");
+
+    digitalWrite(IN1_PIN, LOW);
+    digitalWrite(IN2_PIN, LOW);
   }
 }
