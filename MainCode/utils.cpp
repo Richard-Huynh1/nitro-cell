@@ -1,5 +1,21 @@
 #include <Arduino.h>
-#include "motor_utils.h"
+#include "utils.h"
+
+void toggleHeadlights(bool isOn) {
+  digitalWrite(HEADLIGHTS_PIN, isOn ? HIGH : LOW);
+}
+
+void toggleRearlights(bool isOn) {
+  digitalWrite(REARLIGHTS_PIN, isOn ? HIGH : LOW);
+}
+
+void setupLights() {
+  pinMode(HEADLIGHTS_PIN, OUTPUT);
+  pinMode(REARLIGHTS_PIN, OUTPUT);
+
+  toggleHeadlights(false);
+  toggleRearlights(false);
+}
 
 void setMotorPwm(int pin1, int pin2, int pwm) {
   pwm = constrain(pwm, -255, 255);
